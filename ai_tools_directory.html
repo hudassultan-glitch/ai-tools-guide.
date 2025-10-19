@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أدوات الذكاء الاصطناعي لدعم الطالب الجامعي</title>
+    <!-- تحميل Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* إعدادات خط إنتر الافتراضي */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Slate 50 */
+        }
+        /* تصميم زر التصفية النشط */
+        .filter-btn.active {
+            background-color: #0ea5e9; /* Sky 500 */
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.4);
+            transform: translateY(-1px);
+        }
+        /* تأثير التكبير عند التحويم على البطاقات */
+        .tool-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transform: scale(1.01);
+        }
+        /* إخفاء العناصر غير المتطابقة */
+        .tool-card.hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- شريط التنقل العلوي والتعريف -->
+    <header class="bg-white shadow-xl">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-right">
+            <h1 class="text-4xl font-extrabold text-sky-700">دليل الذكاء الاصطناعي الجامعي</h1>
+            <p class="mt-2 text-lg text-gray-600">أفضل الأدوات الرقمية لمساعدتك في البحث، الدراسة، والتحليل الأكاديمي.</p>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي والأدوات -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        
+        <!-- قسم الأدوات المقترحة (المضافة حديثًا) -->
+        <section class="mb-12 p-6 bg-yellow-50 rounded-xl border border-yellow-200">
+            <h2 class="text-2xl font-bold text-yellow-800 mb-4 flex items-center justify-end">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 ml-2 text-yellow-600 flex-shrink-0">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a2.25 2.25 0 100-4.5m0 4.5a2.25 2.25 0 01-2.25 2.25M12 18.75a6 6 0 100-12 6 6 0 000 12z" />
+                </svg>
+                مقترح لك: أدوات التربية البدنية وعلوم الرياضة
+            </h2>
+            <div id="recommended-grid" class="grid gap-6 md:grid-cols-2">
+                <!-- سيتم ملؤه بواسطة JS بأدوات 'رياضة' -->
+            </div>
+        </section>
+
+        <!-- أدوات البحث والتصفية (المُعدّلة) -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 text-right">كتالوج جميع الأدوات</h2>
+            
+            <!-- شريط البحث (المضاف حديثاً) -->
+            <div class="mb-6">
+                <input type="text" id="search-input" onkeyup="filterTools()" 
+                       placeholder="ابحث عن أداة بالاسم أو الوصف أو التخصص..." 
+                       class="w-full p-3 border border-gray-300 rounded-xl focus:ring-sky-500 focus:border-sky-500 text-right shadow-sm transition duration-150" dir="rtl">
+            </div>
+
+            <!-- أزرار التصفية -->
+            <div id="filter-container" class="flex flex-wrap gap-3 text-right">
+                <!-- الأزرار ستُنشأ تلقائياً بواسطة JS لتحتوي على العدد الصحيح -->
+            </div>
+        </section>
+
+        <!-- شبكة عرض الأدوات -->
+        <section id="tools-grid" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            
+            <!-- سيتم ملء هذه الشبكة بواسطة جافاسكريبت -->
+
+        </section>
+    </main>
+
+    <!-- تذييل الصفحة -->
+    <footer class="mt-12 p-6 bg-gray-800 text-white text-center">
+        <p class="text-sm">
+            &copy; 2025 دليل الذكاء الاصطناعي للطلاب الجامعيين.
+            <span class="block mt-1 text-gray-400">جميع الأدوات المذكورة هي أمثلة توضيحية.</span>
+        </p>
+    </footer>
+
+    <script>
+        // متغير عالمي لتتبع الفئة النشطة
+        let activeCategory = 'all';
+
+        // مصفوفة الأدوات (Mock Data) مع روابط افتراضية مُحسّنة
+        const toolsData = [
+            // 1. أدوات متخصصة في التربية البدنية وعلوم الرياضة
+            {
+                name: "AI-Biomechanics Analyzer",
+                description: "أداة متقدمة لتحليل الفيديو الحركي (Video Analysis) وتحديد الزوايا والقوى المؤثرة في الأداء الرياضي (كالقفز والجري).",
+                category: ["رياضة"],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-red-500"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>`,
+                link: "https://www.sports-ai-analysis.com/biomech-tool"
+            },
+            {
+                name: "Performance Plan Builder",
+                description: "يساعد في تصميم برامج تدريبية فردية بناءً على مستوى لياقة الطالب أو الرياضي، مع تحديد الحمل والشدة والراحة المثلى.",
+                category: ["رياضة", "دراسة"],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-green-500"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`,
+                link: "https://www.training-optimizer.net/plan-builder"
+            },
+            {
+                name: "Sport Nutrition Planner",
+                description: "يقدم خططًا غذائية مخصصة (Diet Plan) للرياضيين بناءً على نوع الرياضة، الأهداف (بناء عضلي/خسارة وزن)، ومتطلبات السعرات الحرارية.",
+                category: ["رياضة"],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-orange-500"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0l-4.5-4.5M12 20.25l4.5-4.5M21 15v4.5M18.75 15v4.5M16.5 15v4.5M14.25 15v4.5M12 15v4.5M9.75 15v4.5M7.5 15v4.5M5.25 15v4.5M3 15v4.5" /></svg>`,
+                link: "https://www.athlete-diet.com/ai-planner"
+            },
+            // 2. أدوات أكاديمية عامة للبحث والدراسة
+            {
+                name: "Academic Summarizer Pro",
+                description: "يلخص الأبحاث والمقالات الطويلة بسرعة ودقة، مما يسهل على الطالب استخلاص النقاط الرئيسية للمراجعة.",
+                category: ["دراسة"],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-blue-500"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-2.625M19.5 14.25a2.25 2.25 0 00-2.25 2.25v.125m2.25-2.375v2.375a2.25 2.25 0 01-2.25 2.25h-2.25m-2.25-2.25H6.75A2.25 2.25 0 004.5 16.5v-.125M6.75 14.25h4.5m-4.5 0a2.25 2.25 0 00-2.25-2.25H4.5M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-2.625m-1.5 7.5a6.75 6.75 0 11-13.5 0 6.75 6.75 0 0113.5 0z" /></svg>`,
+                link: "https://www.ai-tools.com/summarizer-pro"
+            },
+            {
+                name: "Citation Generator (APA/MLA)",
+                description: "يساعد في توثيق المراجع والمصادر بطريقة أكاديمية صحيحة (مثل نظام APA) بشكل آلي لتقارير ومشاريع التخرج.",
+                category: ["بحث"],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-purple-500"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 8.25V6a2.25 2.25 0 00-2.25-2.25H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25h12A2.25 2.25 0 0020.25 18V9.75M17.25 8.25L21 12M17.25 8.25L13.5 12" /></svg>`,
+                link: "https://www.my-thesis.org/citation-ai"
+            },
+            {
+                name: "Plagiarism Checker AI",
+                description: "أداة ضرورية للتحقق من أصالة الأبحاث وضمان خلوها من الانتحال الأكاديمي قبل التسليم.",
+                category: ["بحث"],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-pink-500"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" /></svg>`,
+                link: "https://www.academic-integrity.com/checker"
+            },
+             {
+                name: "Concept Mapper",
+                description: "يولد خرائط ذهنية (Mind Maps) تلقائية للمحاضرات والمواضيع المعقدة، مما يسهل عملية المراجعة والفهم.",
+                category: ["دراسة"],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-yellow-500"><path stroke-linecap="round" stroke-linejoin="round" d="M19 12H5m14 0l-4 4m4-4l-4-4" /></svg>`,
+                link: "https://www.learn-smarter.ai/mapper"
+            },
+            {
+                name: "Statistical Assistant",
+                description: "يساعد في اختيار الاختبار الإحصائي المناسب (مثل T-test أو ANOVA) لبيانات البحث الرياضي ويفسر النتائج الأولية.",
+                category: ["رياضة", "بحث"],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-cyan-500"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125a9.75 9.75 0 016.75-9.375M21 13.125a9.75 9.75 0 00-6.75-9.375M12 21a9.75 9.75 0 01-6.75-9.375m6.75 9.375a9.75 9.75 0 006.75-9.375" /></svg>`,
+                link: "https://www.sport-research.com/stats-ai"
+            }
+        ];
+
+        const toolsGrid = document.getElementById('tools-grid');
+        const recommendedGrid = document.getElementById('recommended-grid');
+        const filterContainer = document.getElementById('filter-container');
+
+        // متغير لتخزين الفئة النشطة
+        let activeCategory = 'all';
+
+        // دالة إنشاء بطاقة الأداة (Tool Card)
+        function createToolCard(tool) {
+            const categoriesString = tool.category.join(' '); 
+            
+            const card = document.createElement('a');
+            card.href = tool.link;
+            card.target = "_blank";
+            card.className = `tool-card block bg-white rounded-xl p-6 shadow-lg hover:shadow-2xl hover:border-sky-500 border border-gray-100 transition duration-300 transform hover:scale-[1.01]`;
+            
+            // إضافة سمات البيانات (Data Attributes) لدعم وظيفة البحث والتصفية
+            card.setAttribute('data-categories', categoriesString);
+            card.setAttribute('data-name', tool.name);
+            card.setAttribute('data-description', tool.description);
+            card.setAttribute('data-is-recommended', tool.category.includes('رياضة') ? 'true' : 'false');
+            
+            const cardContent = `
+                <div class="flex items-start mb-4">
+                    <div class="p-3 bg-sky-100 rounded-full flex-shrink-0 ml-4">
+                        ${tool.icon}
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900">${tool.name}</h3>
+                        <div class="flex flex-wrap gap-2 mt-1">
+                            ${tool.category.map(cat => `<span class="text-xs font-medium text-sky-800 bg-sky-100 px-3 py-1 rounded-full">${cat}</span>`).join('')}
+                        </div>
+                    </div>
+                </div>
+                <p class="text-gray-700 text-right">${tool.description}</p>
+                <div class="mt-4 text-left">
+                    <span class="text-sky-600 font-semibold hover:text-sky-800 transition duration-150 flex items-center justify-end">
+                        استكشف الأداة
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-1">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7 7-7m7 14l7-7-7-7" />
+                        </svg>
+                    </span>
+                </div>
+            `;
+            card.innerHTML = cardContent;
+            return card;
+        }
+
+        // دالة إنشاء زر التصفية
+        function createFilterButton(category, count) {
+            const display = category === 'all' ? 'الكل' : (category === 'رياضة' ? 'علوم الرياضة' : (category === 'بحث' ? 'البحث العلمي' : 'الدراسة والتلخيص'));
+            const button = document.createElement('button');
+            button.className = `filter-btn px-4 py-2 text-sm font-semibold rounded-full bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 transition duration-150`;
+            button.setAttribute('data-filter', category);
+            button.textContent = `${display} (${count})`;
+            return button;
+        }
+
+        // دالة تهيئة أزرار التصفية وإضافة معالج الحدث
+        function setupFilters() {
+            const categories = {};
+            // حساب عدد الأدوات في كل فئة
+            toolsData.forEach(tool => {
+                tool.category.forEach(cat => {
+                    categories[cat] = (categories[cat] || 0) + 1;
+                });
+            });
+
+            // مسح الأزرار القديمة وإضافة زر "الكل" أولاً
+            filterContainer.innerHTML = '';
+            const totalCount = toolsData.length;
+            const allBtn = createFilterButton('all', totalCount);
+            filterContainer.appendChild(allBtn);
+
+            // إضافة الأزرار لكل فئة فرعية
+            ['رياضة', 'بحث', 'دراسة'].forEach(cat => {
+                if (categories[cat]) {
+                    filterContainer.appendChild(createFilterButton(cat, categories[cat]));
+                }
+            });
+
+            // تفعيل زر "الكل" افتراضياً
+            allBtn.classList.add('active', 'bg-sky-500', 'text-white');
+            allBtn.classList.remove('bg-white', 'text-gray-700', 'border', 'border-gray-300', 'hover:bg-gray-100');
+
+            // معالج حدث النقر على أزرار التصفية
+            filterContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('filter-btn')) {
+                    const filterValue = e.target.getAttribute('data-filter');
+                    activeCategory = filterValue; // تحديث الفئة النشطة
+
+                    // تحديث مظهر الأزرار
+                    document.querySelectorAll('.filter-btn').forEach(btn => {
+                        btn.classList.remove('active', 'bg-sky-500', 'text-white');
+                        btn.classList.add('bg-white', 'text-gray-700', 'border', 'border-gray-300', 'hover:bg-gray-100');
+                    });
+                    e.target.classList.add('active', 'bg-sky-500', 'text-white');
+                    e.target.classList.remove('bg-white', 'text-gray-700', 'border', 'border-gray-300', 'hover:bg-gray-100');
+
+                    filterTools(); // إعادة التصفية
+                }
+            });
+        }
+
+        // دالة التصفية الرئيسية التي تتعامل مع البحث والفئة معاً
+        function filterTools() {
+            const searchQuery = document.getElementById('search-input').value.toLowerCase();
+            const cards = document.querySelectorAll('.tool-card');
+            let matchedCount = 0;
+
+            cards.forEach(card => {
+                const categories = card.getAttribute('data-categories'); 
+                const toolName = card.getAttribute('data-name').toLowerCase();
+                const toolDescription = card.getAttribute('data-description').toLowerCase();
+                
+                // 1. تحقق من الفئة (Active Category Check)
+                const categoryMatch = activeCategory === 'all' || categories.includes(activeCategory);
+
+                // 2. تحقق من البحث النصي (Search Query Check)
+                const searchMatch = toolName.includes(searchQuery) || toolDescription.includes(searchQuery) || categories.includes(searchQuery);
+
+                if (categoryMatch && searchMatch) {
+                    card.classList.remove('hidden');
+                    matchedCount++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            // تحديث عدد الأدوات في زر "الكل" بناءً على النتائج المفلترة
+            const allBtn = document.querySelector('[data-filter="all"]');
+            if (allBtn) {
+                 allBtn.textContent = `الكل (${matchedCount})`;
+            }
+        }
+
+        // دالة عرض جميع الأدوات في الشبكة الرئيسية
+        function renderAllTools() {
+            toolsGrid.innerHTML = '';
+            toolsData.forEach(tool => {
+                const card = createToolCard(tool);
+                toolsGrid.appendChild(card);
+            });
+        }
+
+        // دالة عرض الأدوات المقترحة (التي تحتوي على فئة 'رياضة')
+        function renderRecommendedTools() {
+            recommendedGrid.innerHTML = '';
+            const recommendedTools = toolsData.filter(tool => tool.category.includes('رياضة'));
+            
+            recommendedTools.forEach(tool => {
+                const card = createToolCard(tool);
+                // تعديل بسيط لشكل بطاقات التوصية لجعلها تبرز
+                card.classList.remove('shadow-lg', 'hover:border-sky-500');
+                card.classList.add('bg-white', 'border-yellow-400', 'shadow-md');
+                recommendedGrid.appendChild(card);
+            });
+        }
+
+        // تشغيل الوظائف عند تحميل الصفحة لأول مرة
+        document.addEventListener('DOMContentLoaded', () => {
+            renderAllTools();       // إنشاء جميع البطاقات
+            renderRecommendedTools(); // إنشاء بطاقات المقترحات
+            setupFilters();         // تهيئة الأزرار ومعالجات الأحداث
+            filterTools();          // تفعيل التصفية الأولية (لتحديث عدد زر الكل)
+        });
+    </script>
+</body>
+</html>
+
